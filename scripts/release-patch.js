@@ -2,15 +2,15 @@ import {execSync} from "node:child_process"
 import {readFileSync} from "node:fs"
 
 /**
- * @param {string} command
- * @returns {void}
+ * @param {string} command Command to execute in the release flow.
+ * @returns {void} No return value.
  */
 const run = (command) => {
   execSync(command, {stdio: "inherit"})
 }
 
 /**
- * @returns {string}
+ * @returns {string} Current package version.
  */
 const currentVersion = () => {
   const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.meta.url)))
@@ -19,7 +19,7 @@ const currentVersion = () => {
 }
 
 /**
- * @returns {void}
+ * @returns {void} No return value.
  */
 const ensureNpmLogin = () => {
   try {

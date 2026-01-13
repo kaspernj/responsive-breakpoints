@@ -18,9 +18,9 @@ const DEFAULT_BREAKPOINTS = [
 ]
 
 /**
- * @param {Array<[string, number]>} breakpoints
- * @param {() => number} getWindowWidth
- * @returns {object}
+ * @param {Array<[string, number]>} breakpoints Ordered list of breakpoints.
+ * @param {() => number} getWindowWidth Window width resolver.
+ * @returns {object} Breakpoint state map.
  */
 function calculateBreakPoint(breakpoints, getWindowWidth) {
   const windowWidth = getWindowWidth()
@@ -48,14 +48,14 @@ function calculateBreakPoint(breakpoints, getWindowWidth) {
 }
 
 /**
- * @param {object} options
- * @param {() => Array<[string, number]>} [options.getBreakpoints]
- * @param {() => object} [options.getEvents]
- * @param {string} [options.eventName]
- * @param {() => number} [options.getWindowWidth]
- * @param {boolean} [options.isExpo]
- * @param {object} [options.dimensions]
- * @returns {Function}
+ * @param {object} options Hook configuration.
+ * @param {() => Array<[string, number]>} [options.getBreakpoints] Breakpoint provider.
+ * @param {() => object} [options.getEvents] Event emitter provider.
+ * @param {string} [options.eventName] Event name for breakpoints.
+ * @param {() => number} [options.getWindowWidth] Window width resolver override.
+ * @param {boolean} [options.isExpo] Force Expo environment detection.
+ * @param {object} [options.dimensions] Dimensions implementation override.
+ * @returns {Function} Configured breakpoint hook.
  */
 const createUseBreakpoint = (options = {}) => {
   const {
@@ -70,7 +70,9 @@ const createUseBreakpoint = (options = {}) => {
   const actualDimensions = dimensionsOverride || Dimensions
   const actualIsExpo = isExpoOverride ?? isExpo
   const resolveWindowWidth = getWindowWidth || (() => {
-    const windowObject = typeof window === "undefined" ? undefined : window
+    const windowObject = typeof globalThis === "undefined"
+      ? undefined
+      : /** @type {{innerWidth?: number} | undefined} */ (/** @type {any} */ (globalThis).window)
 
     // Use 'window.innerWidth' outside Expo because sometimes window width excludes scroll
     return resolveWindowWidthFromSources({
