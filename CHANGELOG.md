@@ -12,3 +12,4 @@
 - Adjust TypeScript config to avoid React Native DOM type conflicts.
 - Enforce JSDoc descriptions for params and returns.
 - Avoid referencing `window` directly in typechecked JS.
+- Push `master` during patch releases.

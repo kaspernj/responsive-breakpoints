@@ -35,6 +35,7 @@ const version = currentVersion()
 
 run("git add -A")
 run(`git commit -m "Release v${version}"`)
+run("git push origin master")
 
 ensureNpmLogin()
 run("npm publish")
