@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "lib": ["es2020", "dom"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "outDir": "build",
+    "rootDir": "src",
+    "target": "es2020"
+  },
+  "include": ["src/**/*.js"]
+}
