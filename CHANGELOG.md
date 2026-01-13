@@ -7,3 +7,4 @@
 - Publish only build output and type declarations.
 - Add Jasmine tests and a peak flow config for lint, typecheck, and test.
 - Fix default window width resolution in non-Expo React Native.
+- Bump `@types/react` to align with React Native peer requirements.
