@@ -6,3 +6,4 @@
 - Consolidate TypeScript build/typecheck into a single `tsconfig.json`.
 - Publish only build output and type declarations.
 - Add Jasmine tests and a peak flow config for lint, typecheck, and test.
+- Fix default window width resolution in non-Expo React Native.
