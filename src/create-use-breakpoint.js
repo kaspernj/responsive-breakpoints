@@ -3,6 +3,7 @@ import {useCallback} from "react"
 import {Dimensions} from "react-native"
 import * as inflection from "inflection"
 import isExpo from "./is-expo.js"
+import {resolveWindowWidthFromSources} from "./resolve-window-width.js"
 import useEventEmitter from "./use-event-emitter.js"
 import useEventListener from "./use-event-listener.js"
 import useShape from "set-state-compare/build/use-shape.js"
@@ -69,16 +70,14 @@ const createUseBreakpoint = (options = {}) => {
   const actualDimensions = dimensionsOverride || Dimensions
   const actualIsExpo = isExpoOverride ?? isExpo
   const resolveWindowWidth = getWindowWidth || (() => {
-    if (actualIsExpo) {
-      return actualDimensions.get("window").width
-    }
+    const windowObject = typeof window === "undefined" ? undefined : window
 
-    if (typeof window !== "undefined" && window.innerWidth !== undefined) {
-      // Use 'window.innerWidth' outside Expo because sometimes window width excludes scroll
-      return window.innerWidth
-    }
-
-    throw new Error("Didn't know where to get window width from")
+    // Use 'window.innerWidth' outside Expo because sometimes window width excludes scroll
+    return resolveWindowWidthFromSources({
+      dimensions: actualDimensions,
+      isExpo: actualIsExpo,
+      windowObject
+    })
   })
 
   const useBreakpoint = (args = {}) => {
