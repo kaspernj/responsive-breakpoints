@@ -1,5 +1,4 @@
 /* eslint-disable func-style, sort-imports */
-/* global window */
 import {useCallback} from "react"
 import {Dimensions} from "react-native"
 import * as inflection from "inflection"
@@ -73,7 +72,7 @@ const createUseBreakpoint = (options = {}) => {
   const resolveWindowWidth = getWindowWidth || (() => {
     const windowObject = typeof globalThis === "undefined"
       ? undefined
-      : /** @type {{innerWidth?: number} | undefined} */ (/** @type {any} */ (globalThis)).window
+      : /** @type {{innerWidth?: number} | undefined} */ (/** @type {any} */ (globalThis).window)
 
     // Use 'window.innerWidth' outside Expo because sometimes window width excludes scroll
     return resolveWindowWidthFromSources({
