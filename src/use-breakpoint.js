@@ -1,0 +1,5 @@
+import createUseBreakpoint from "./create-use-breakpoint.js"
+
+const useBreakpoint = createUseBreakpoint()
+
+export default useBreakpoint
