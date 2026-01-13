@@ -30,6 +30,7 @@ const ensureNpmLogin = () => {
 }
 
 run("npm version patch --no-git-tag-version")
+run("npm run build")
 
 const version = currentVersion()
 
