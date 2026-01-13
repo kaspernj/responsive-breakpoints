@@ -5,14 +5,12 @@
   "description": "Responsive breakpoint utilities for React and React Native",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
   "exports": {
     ".": "./build/index.js"
   },
-  "files": [
-    "build/**",
-    "CHANGELOG.md",
-    "package.json"
-  ],
   "keywords": [
     "breakpoints",
     "react",
