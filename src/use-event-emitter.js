@@ -3,10 +3,10 @@ import useEnvSense from "env-sense/build/use-env-sense.js"
 import {useEffect, useLayoutEffect, useMemo} from "react"
 
 /**
- * @param {object} events
- * @param {string} event
- * @param {Function} onCalled
- * @returns {void}
+ * @param {object} events Event emitter to subscribe to.
+ * @param {string} event Event name to listen for.
+ * @param {Function} onCalled Callback invoked on event.
+ * @returns {void} No return value.
  */
 export default function useEventEmitter(events, event, onCalled) {
   const {isServer} = useEnvSense()

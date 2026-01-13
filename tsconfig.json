@@ -3,12 +3,13 @@
     "allowJs": true,
     "checkJs": true,
     "declaration": true,
-    "lib": ["es2020", "dom"],
+    "lib": ["es2020"],
     "module": "esnext",
     "moduleResolution": "node",
     "outDir": "build",
     "rootDir": "src",
-    "target": "es2020"
+    "target": "es2020",
+    "types": []
   },
-  "include": ["src/**/*.js"]
+  "include": ["src/**/*.js", "src/**/*.d.ts"]
 }

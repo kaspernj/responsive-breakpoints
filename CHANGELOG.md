@@ -9,3 +9,6 @@
 - Fix default window width resolution in non-Expo React Native.
 - Bump `@types/react` to align with React Native peer requirements.
 - Add a `release:patch` script for publishing patch releases.
+- Adjust TypeScript config to avoid React Native DOM type conflicts.
+- Enforce JSDoc descriptions for params and returns.
+- Avoid referencing `window` directly in typechecked JS.
