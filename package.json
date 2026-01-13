@@ -24,6 +24,7 @@
   "scripts": {
     "build": "tsc --outDir build",
     "lint": "eslint .",
+    "release:patch": "node scripts/release-patch.js",
     "test": "jasmine",
     "typecheck": "tsc --noEmit"
   },
