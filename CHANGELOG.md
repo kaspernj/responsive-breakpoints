@@ -14,3 +14,4 @@
 - Avoid referencing `window` directly in typechecked JS.
 - Push `master` during patch releases.
 - Run build during patch releases.
+- Build before publish so `build/` is included in npm packages.
