@@ -1,5 +1,5 @@
 /* eslint-disable func-style, sort-imports */
-import {useCallback} from "react"
+import {useCallback, useEffect} from "react"
 import {Dimensions} from "react-native"
 import * as inflection from "inflection"
 import isExpo from "./is-expo.js"
@@ -136,6 +136,9 @@ const createUseBreakpoint = (options = {}) => {
 
     useEventEmitter(events, eventName, onBreakpointsChange)
     useEventListener(actualDimensions, "change", onDimensionsChange)
+    useEffect(() => {
+      checkAndUpdateBreakpoint()
+    }, [])
 
     return {
       styling,
