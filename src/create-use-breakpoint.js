@@ -1,5 +1,5 @@
 /* eslint-disable func-style, sort-imports */
-import {useCallback} from "react"
+import {useCallback, useEffect} from "react"
 import {Dimensions} from "react-native"
 import * as inflection from "inflection"
 import isExpo from "./is-expo.js"
@@ -18,12 +18,56 @@ const DEFAULT_BREAKPOINTS = [
 ]
 
 /**
- * @param {Array<[string, number]>} breakpoints Ordered list of breakpoints.
+ * @typedef {[string, number]} BreakpointDefinition
+ */
+
+/**
+ * @typedef {{name: string} & Record<string, unknown>} BreakpointState
+ */
+
+/**
+ * @typedef {{base?: object} & Record<string, object | undefined>} BreakpointStylingArgs
+ */
+
+/**
+ * @typedef {{
+ *   addListener: (event: string, onCalled: (...args: Array<any>) => void) => void,
+ *   removeListener: (event: string, onCalled: (...args: Array<any>) => void) => void
+ * }} EventEmitterLike
+ */
+
+/**
+ * @typedef {{
+ *   remove?: () => void
+ * }} EventListenerSubscription
+ */
+
+/**
+ * @typedef {{
+ *   get: (key: string) => {width: number},
+ *   addEventListener: (event: string, onCalled: (...args: Array<any>) => void) => EventListenerSubscription | void,
+ *   removeEventListener?: (event: string, onCalled: (...args: Array<any>) => void) => void
+ * }} DimensionsLike
+ */
+
+/**
+ * @typedef {object} CreateUseBreakpointOptions
+ * @property {() => Array<BreakpointDefinition>} [getBreakpoints] Breakpoint provider.
+ * @property {() => EventEmitterLike | null} [getEvents] Event emitter provider.
+ * @property {string} [eventName] Event name for breakpoints.
+ * @property {() => number} [getWindowWidth] Window width resolver override.
+ * @property {boolean} [isExpo] Force Expo environment detection.
+ * @property {DimensionsLike} [dimensions] Dimensions implementation override.
+ */
+
+/**
+ * @param {Array<BreakpointDefinition>} breakpoints Ordered list of breakpoints.
  * @param {() => number} getWindowWidth Window width resolver.
- * @returns {object} Breakpoint state map.
+ * @returns {BreakpointState} Breakpoint state map.
  */
 function calculateBreakPoint(breakpoints, getWindowWidth) {
   const windowWidth = getWindowWidth()
+  /** @type {{name?: string} & Record<string, boolean | string | undefined>} */
   const result = {}
 
   for (const breakpointData of breakpoints) {
@@ -41,20 +85,14 @@ function calculateBreakPoint(breakpoints, getWindowWidth) {
   }
 
   if (result.name) {
-    return result
+    return /** @type {BreakpointState} */ (result)
   }
 
   throw new Error(`Couldn't not find breakpoint from window width: ${windowWidth}`)
 }
 
 /**
- * @param {object} options Hook configuration.
- * @param {() => Array<[string, number]>} [options.getBreakpoints] Breakpoint provider.
- * @param {() => object} [options.getEvents] Event emitter provider.
- * @param {string} [options.eventName] Event name for breakpoints.
- * @param {() => number} [options.getWindowWidth] Window width resolver override.
- * @param {boolean} [options.isExpo] Force Expo environment detection.
- * @param {object} [options.dimensions] Dimensions implementation override.
+ * @param {CreateUseBreakpointOptions} options Hook configuration.
  * @returns {Function} Configured breakpoint hook.
  */
 const createUseBreakpoint = (options = {}) => {
@@ -67,7 +105,7 @@ const createUseBreakpoint = (options = {}) => {
     dimensions: dimensionsOverride
   } = options
 
-  const actualDimensions = dimensionsOverride || Dimensions
+  const actualDimensions = /** @type {DimensionsLike} */ (dimensionsOverride || Dimensions)
   const actualIsExpo = isExpoOverride ?? isExpo
   const resolveWindowWidth = getWindowWidth || (() => {
     const windowObject = typeof globalThis === "undefined"
@@ -82,6 +120,10 @@ const createUseBreakpoint = (options = {}) => {
     })
   })
 
+  /**
+   * @param {object} [args] Shape configuration arguments.
+   * @returns {{styling: (args: BreakpointStylingArgs) => object} & BreakpointState} Breakpoint helpers and state.
+   */
   const useBreakpoint = (args = {}) => {
     const s = useShape(args)
     const events = getEvents()
@@ -90,8 +132,9 @@ const createUseBreakpoint = (options = {}) => {
 
     const checkAndUpdateBreakpoint = useCallback(() => {
       const breakpoint = calculateBreakPoint(s.m.breakpoints, resolveWindowWidth)
+      const currentBreakpoint = /** @type {BreakpointState | undefined} */ (s.s.breakpoint)
 
-      if (breakpoint.name != s.s.breakpoint.name) {
+      if (breakpoint.name != currentBreakpoint?.name) {
         s.set({breakpoint})
       }
     }, [])
@@ -100,16 +143,28 @@ const createUseBreakpoint = (options = {}) => {
       checkAndUpdateBreakpoint()
     }, [])
 
-    const onBreakpointsChange = useCallback(({newValue}) => {
+    const onBreakpointsChange = useCallback(
+      /**
+       * @param {{newValue: Array<BreakpointDefinition>}} param0 Breakpoint change payload.
+       * @returns {void} No return value.
+       */
+      ({newValue}) => {
       s.meta.breakpoints = newValue
       checkAndUpdateBreakpoint()
-    }, [])
+      },
+      []
+    )
 
     s.useStates({
       breakpoint: () => calculateBreakPoint(s.m.breakpoints, resolveWindowWidth)
     })
 
-    const styling = useCallback((args) => {
+    const styling = useCallback(
+      /**
+       * @param {BreakpointStylingArgs} args Styling arguments.
+       * @returns {object} Merged style object.
+       */
+      (args) => {
       // eslint-disable-next-line prefer-object-spread
       const style = Object.assign({}, args.base)
 
@@ -132,14 +187,19 @@ const createUseBreakpoint = (options = {}) => {
       }
 
       return style
-    }, [])
+      },
+      []
+    )
 
     useEventEmitter(events, eventName, onBreakpointsChange)
     useEventListener(actualDimensions, "change", onDimensionsChange)
+    useEffect(() => {
+      checkAndUpdateBreakpoint()
+    }, [])
 
     return {
       styling,
-      ...s.s.breakpoint
+      .../** @type {BreakpointState} */ (s.s.breakpoint)
     }
   }
 

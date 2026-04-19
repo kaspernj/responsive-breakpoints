@@ -9,7 +9,8 @@
     "build"
   ],
   "exports": {
-    ".": "./build/index.js"
+    ".": "./build/index.js",
+    "./build/*.js": "./build/*.js"
   },
   "keywords": [
     "breakpoints",
@@ -22,6 +23,7 @@
   "scripts": {
     "build": "tsc --outDir build",
     "lint": "eslint .",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build",
     "release:patch": "node scripts/release-patch.js",
     "test": "jasmine",
@@ -38,7 +40,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-jsdoc": "^48.2.8",
     "jasmine": "^5.1.1",
-    "typescript": "^5.4.5"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": ">=18.3.0",
