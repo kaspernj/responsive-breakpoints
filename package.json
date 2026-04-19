@@ -27,7 +27,7 @@
     "prepublishOnly": "npm run build",
     "release:patch": "node scripts/release-patch.js",
     "test": "jasmine",
-    "typecheck": "tsc --ignoreConfig --noEmit --allowJs --checkJs --declaration false --rootDir . --target es2020 --module esnext --moduleResolution node --ignoreDeprecations 6.0 --skipLibCheck --types jasmine,node src/*.js scripts/*.js spec/*.cjs"
+    "typecheck": "tsc --ignoreConfig --noEmit --allowJs --checkJs --declaration false --rootDir . --skipLibCheck --types jasmine,node src/*.js scripts/*.js spec/*.cjs"
   },
   "dependencies": {
     "diggerize": ">= 1.0.10",

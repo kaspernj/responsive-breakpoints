@@ -22,7 +22,8 @@ const output = (command) => {
  * @returns {string} Current package version.
  */
 const currentVersion = () => {
-  const packageJson = JSON.parse(readFileSync("package.json", "utf8"))
+  const packageJsonPath = decodeURIComponent(new URL("../package.json", import.meta.url).pathname)
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"))
 
   return packageJson.version
 }
