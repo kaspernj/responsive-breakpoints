@@ -1,2 +1,3 @@
+// @ts-check
 export {default as createUseBreakpoint} from "./create-use-breakpoint.js"
 export {default as useBreakpoint} from "./use-breakpoint.js"

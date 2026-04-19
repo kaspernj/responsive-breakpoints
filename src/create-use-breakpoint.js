@@ -1,3 +1,4 @@
+// @ts-check
 /* eslint-disable func-style, sort-imports */
 import {useCallback, useEffect} from "react"
 import {Dimensions} from "react-native"
@@ -31,8 +32,8 @@ const DEFAULT_BREAKPOINTS = [
 
 /**
  * @typedef {{
- *   addListener: (event: string, onCalled: (...args: Array<any>) => void) => void,
- *   removeListener: (event: string, onCalled: (...args: Array<any>) => void) => void
+ *   addListener: (event: string, onCalled: (...args: Array<unknown>) => void) => void,
+ *   removeListener: (event: string, onCalled: (...args: Array<unknown>) => void) => void
  * }} EventEmitterLike
  */
 
@@ -45,9 +46,13 @@ const DEFAULT_BREAKPOINTS = [
 /**
  * @typedef {{
  *   get: (key: string) => {width: number},
- *   addEventListener: (event: string, onCalled: (...args: Array<any>) => void) => EventListenerSubscription | void,
- *   removeEventListener?: (event: string, onCalled: (...args: Array<any>) => void) => void
+ *   addEventListener: (event: string, onCalled: (...args: Array<unknown>) => void) => EventListenerSubscription | void,
+ *   removeEventListener?: (event: string, onCalled: (...args: Array<unknown>) => void) => void
  * }} DimensionsLike
+ */
+
+/**
+ * @typedef {(args?: object) => {styling: (args: BreakpointStylingArgs) => object} & BreakpointState} UseBreakpointHook
  */
 
 /**
@@ -93,7 +98,7 @@ function calculateBreakPoint(breakpoints, getWindowWidth) {
 
 /**
  * @param {CreateUseBreakpointOptions} options Hook configuration.
- * @returns {Function} Configured breakpoint hook.
+ * @returns {UseBreakpointHook} Configured breakpoint hook.
  */
 const createUseBreakpoint = (options = {}) => {
   const {
@@ -110,7 +115,9 @@ const createUseBreakpoint = (options = {}) => {
   const resolveWindowWidth = getWindowWidth || (() => {
     const windowObject = typeof globalThis === "undefined"
       ? undefined
-      : /** @type {{innerWidth?: number} | undefined} */ (/** @type {any} */ (globalThis).window)
+      : /** @type {{innerWidth?: number} | undefined} */ (
+        /** @type {{window?: {innerWidth?: number}}} */ (globalThis).window
+      )
 
     // Use 'window.innerWidth' outside Expo because sometimes window width excludes scroll
     return resolveWindowWidthFromSources({
@@ -145,12 +152,14 @@ const createUseBreakpoint = (options = {}) => {
 
     const onBreakpointsChange = useCallback(
       /**
-       * @param {{newValue: Array<BreakpointDefinition>}} param0 Breakpoint change payload.
+       * @param {unknown} event Breakpoint change payload.
        * @returns {void} No return value.
        */
-      ({newValue}) => {
-      s.meta.breakpoints = newValue
-      checkAndUpdateBreakpoint()
+      (event) => {
+        const {newValue} = /** @type {{newValue: Array<BreakpointDefinition>}} */ (event)
+
+        s.meta.breakpoints = newValue
+        checkAndUpdateBreakpoint()
       },
       []
     )

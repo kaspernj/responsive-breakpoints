@@ -1,5 +1,7 @@
+// @ts-check
 import {digg, digs} from "diggerize"
 
+/** @type {boolean} */
 let isExpo = false
 
 try {

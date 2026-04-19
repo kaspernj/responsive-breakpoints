@@ -1,3 +1,4 @@
+// @ts-check
 /* eslint-disable sort-imports */
 import useEnvSense from "env-sense/build/use-env-sense.js"
 import {useCallback, useEffect, useLayoutEffect} from "react"
@@ -10,15 +11,15 @@ import {useCallback, useEffect, useLayoutEffect} from "react"
 
 /**
  * @typedef {{
- *   addEventListener: (event: string, onCalled: (...args: Array<any>) => void) => EventListenerSubscription | void,
- *   removeEventListener?: (event: string, onCalled: (...args: Array<any>) => void) => void
+ *   addEventListener: (event: string, onCalled: (...args: Array<unknown>) => void) => EventListenerSubscription | void,
+ *   removeEventListener?: (event: string, onCalled: (...args: Array<unknown>) => void) => void
  * }} EventTargetLike
  */
 
 /**
  * @param {EventTargetLike | null | undefined} target Event target to attach listeners to.
  * @param {string} event Event name to listen for.
- * @param {(...args: Array<any>) => void} onCalled Callback invoked on event.
+ * @param {(...args: Array<unknown>) => void} onCalled Callback invoked on event.
  * @returns {void} No return value.
  */
 const useEventListener = (target, event, onCalled) => {
@@ -26,7 +27,7 @@ const useEventListener = (target, event, onCalled) => {
   const useWorkingEffect = isServer ? useEffect : useLayoutEffect
   const onCalledCallback = useCallback(
     /**
-     * @param {...any} args Event callback arguments.
+     * @param {...unknown} args Event callback arguments.
      * @returns {void} No return value.
      */
     (...args) => {

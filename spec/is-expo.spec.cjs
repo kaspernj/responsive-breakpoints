@@ -1,3 +1,4 @@
+// @ts-check
 const {createRequire} = require("node:module")
 
 global.require = createRequire(__filename)
