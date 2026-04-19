@@ -10,6 +10,14 @@ const run = (command) => {
 }
 
 /**
+ * @param {string} command Command to execute and capture stdout from.
+ * @returns {string} Trimmed stdout.
+ */
+const output = (command) => {
+  return execSync(command, {encoding: "utf8"}).trim()
+}
+
+/**
  * @returns {string} Current package version.
  */
 const currentVersion = () => {
@@ -29,6 +37,19 @@ const ensureNpmLogin = () => {
   }
 }
 
+/**
+ * @returns {void} No return value.
+ */
+const ensureCleanWorktree = () => {
+  if (output("git status --short")) {
+    throw new Error("Release requires a clean git worktree")
+  }
+}
+
+ensureCleanWorktree()
+run("git fetch origin")
+run("git checkout master")
+run("git merge --ff-only origin/master")
 run("npm version patch --no-git-tag-version")
 run("npm run build")
 
