@@ -1,3 +1,4 @@
+// @ts-check
 describe("resolveWindowWidthFromSources", () => {
   it("uses window width when not in Expo", async () => {
     const {resolveWindowWidthFromSources} = await import("../src/resolve-window-width.js")

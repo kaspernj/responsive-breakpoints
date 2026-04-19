@@ -1,3 +1,4 @@
+// @ts-check
 import {execSync} from "node:child_process"
 import {readFileSync} from "node:fs"
 
@@ -21,7 +22,7 @@ const output = (command) => {
  * @returns {string} Current package version.
  */
 const currentVersion = () => {
-  const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.meta.url)))
+  const packageJson = JSON.parse(readFileSync("package.json", "utf8"))
 
   return packageJson.version
 }

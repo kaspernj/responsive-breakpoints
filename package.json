@@ -27,7 +27,7 @@
     "prepublishOnly": "npm run build",
     "release:patch": "node scripts/release-patch.js",
     "test": "jasmine",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json"
   },
   "dependencies": {
     "diggerize": ">= 1.0.10",
@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "@types/react": "^19.1.1",
+    "@types/jasmine": "^5.1.12",
+    "@types/node": "^24.6.1",
     "eslint": "^8.57.0",
     "eslint-plugin-jsdoc": "^62.9.0",
     "jasmine": "^5.1.1",
