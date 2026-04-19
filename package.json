@@ -39,7 +39,7 @@
     "@types/react": "^19.1.1",
     "eslint": "^8.57.0",
     "eslint-plugin-jsdoc": "^62.9.0",
-    "jasmine": "^5.1.1",
+    "jasmine": "^6.2.0",
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
