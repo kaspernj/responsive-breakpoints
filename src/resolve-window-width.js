@@ -1,8 +1,20 @@
 /**
+ * @typedef {{width: number}} WindowDimensions
+ */
+
+/**
+ * @typedef {{get: (key: string) => WindowDimensions}} DimensionsLike
+ */
+
+/**
+ * @typedef {{innerWidth?: number}} WindowObjectLike
+ */
+
+/**
  * @param {object} options Input sources for resolving window width.
- * @param {object} [options.dimensions] React Native Dimensions-like module.
+ * @param {DimensionsLike} [options.dimensions] React Native Dimensions-like module.
  * @param {boolean} [options.isExpo] Whether the environment is Expo.
- * @param {object} [options.windowObject] Window-like object with innerWidth.
+ * @param {WindowObjectLike} [options.windowObject] Window-like object with innerWidth.
  * @returns {number} Resolved window width.
  */
 const resolveWindowWidthFromSources = ({dimensions, isExpo, windowObject}) => {

@@ -3,18 +3,38 @@ import useEnvSense from "env-sense/build/use-env-sense.js"
 import {useCallback, useEffect, useLayoutEffect} from "react"
 
 /**
- * @param {object} target Event target to attach listeners to.
+ * @typedef {{
+ *   remove?: () => void
+ * }} EventListenerSubscription
+ */
+
+/**
+ * @typedef {{
+ *   addEventListener: (event: string, onCalled: (...args: Array<any>) => void) => EventListenerSubscription | void,
+ *   removeEventListener?: (event: string, onCalled: (...args: Array<any>) => void) => void
+ * }} EventTargetLike
+ */
+
+/**
+ * @param {EventTargetLike | null | undefined} target Event target to attach listeners to.
  * @param {string} event Event name to listen for.
- * @param {Function} onCalled Callback invoked on event.
+ * @param {(...args: Array<any>) => void} onCalled Callback invoked on event.
  * @returns {void} No return value.
  */
 const useEventListener = (target, event, onCalled) => {
   const {isServer} = useEnvSense()
   const useWorkingEffect = isServer ? useEffect : useLayoutEffect
-  const onCalledCallback = useCallback((...args) => {
-    // eslint-disable-next-line prefer-spread
-    onCalled.apply(null, args)
-  }, [target, event, onCalled])
+  const onCalledCallback = useCallback(
+    /**
+     * @param {...any} args Event callback arguments.
+     * @returns {void} No return value.
+     */
+    (...args) => {
+      // eslint-disable-next-line prefer-spread
+      onCalled.apply(null, args)
+    },
+    [target, event, onCalled]
+  )
 
   useWorkingEffect(() => {
     if (target) {

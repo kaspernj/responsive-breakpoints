@@ -3,6 +3,7 @@
     "allowJs": true,
     "checkJs": true,
     "declaration": true,
+    "ignoreDeprecations": "6.0",
     "lib": ["es2020"],
     "module": "esnext",
     "moduleResolution": "node",
