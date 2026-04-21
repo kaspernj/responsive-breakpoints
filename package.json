@@ -1,6 +1,6 @@
 {
   "name": "responsive-breakpoints",
-  "version": "0.1.6",
+  "version": "0.1.5",
   "type": "module",
   "description": "Responsive breakpoint utilities for React and React Native",
   "main": "build/index.js",
