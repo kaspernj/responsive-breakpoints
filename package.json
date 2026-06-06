@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "^5.1.12",
-    "@types/node": "^24.6.1",
+    "@types/node": "^25.9.2",
     "@types/react": "^19.1.1",
     "eslint": "^8.57.0",
     "eslint-plugin-jsdoc": "^62.9.0",
