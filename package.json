@@ -43,7 +43,7 @@
     "eslint-plugin-jsdoc": "^62.9.0",
     "jasmine": "^6.2.0",
     "release-patch": "^1.0.0",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "peerDependencies": {
     "react": ">=18.3.0",
