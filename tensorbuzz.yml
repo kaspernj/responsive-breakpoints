@@ -1,0 +1,10 @@
+before_script:
+  - npm install
+paths:
+  - "**"
+  - "!**/*.md"
+  - "!LICENSE"
+script:
+  - npm run lint
+  - npm run typecheck
+  - npm test
